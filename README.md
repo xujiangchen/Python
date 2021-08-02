@@ -18,3 +18,6 @@
 
 ## Python应用
 
+- [一个简单的Python爬虫](https://github.com/xujiangchen/Python/blob/main/notes/applicance/crawler.md)
+
+  在使用爬虫时我们应该注意什么，什么是robots.txt，如何实现一个最简单的爬虫程序
