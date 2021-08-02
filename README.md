@@ -21,3 +21,7 @@
 - [一个简单的Python爬虫](https://github.com/xujiangchen/Python/blob/main/notes/applicance/crawler.md)
 
   在使用爬虫时我们应该注意什么，什么是robots.txt，如何实现一个最简单的爬虫程序
+
+- [python操作redis](https://github.com/xujiangchen/Python/blob/main/notes/applicance/redis.md)
+  
+  python是如何连接redis和redis集群的，通过python代码如何操作redis的相关api
