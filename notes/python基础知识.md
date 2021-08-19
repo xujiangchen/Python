@@ -391,6 +391,16 @@ str_of_dict = "{'key1': 'key1value', 'key2': 'key2value'}"
 result = ast.literal_eval(str_of_dict)
 ```
 
+**判断python字典中key是否存在**
+```python
+user  = '{"name":"jim","sex":"male","age":"18"}'
+
+# 方式一：
+user.has_key("name")
+
+# 方式二(建议)：
+"name" in user.keys()
+```
 
 
 ## 4.5 rang类型
