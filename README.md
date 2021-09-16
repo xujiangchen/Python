@@ -26,6 +26,10 @@
   
   python是如何连接redis和redis集群的，通过python代码如何操作redis的相关api
 
-- [python操作kafak]()
+- [python操作kafak](https://github.com/xujiangchen/Python/blob/main/notes/applicance/kafka.md)
   
   python 如何连接kafka，并实现kafka的生产者和消费者
+
+- [python操作es](https://github.com/xujiangchen/Python/blob/main/notes/applicance/es.md)
+  
+  python 如何连接es和es集群，并对es中的数据进行查询和删除
