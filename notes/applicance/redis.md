@@ -1,16 +1,16 @@
 - [一、python连接单一redis](#一python连接单一redis)
-    - [所需依赖模块](#所需依赖模块)
-    - [连接代码](#连接代码)
+  - [所需依赖模块：](#所需依赖模块)
+  - [连接代码：](#连接代码)
 - [二、python连接redis集群](#二python连接redis集群)
-    - [所需依赖模块](#所需依赖模块)
-    - [连接代码](#连接代码)
-- [三、Redis的API使用](#三Redis的API使用)
-    - [3.1 String操作](#31-String操作)
-    - [3.2 Hash操作](#32-Hash操作)
-    - [3.3 List操作](#33-List操作)
-    - [3.4 Set操作](#34-Set操作)
-    - [3.5 其他常用操作](#35-其他常用操作)
-    - [3.6 订阅和发布](#36-订阅和发布)
+  - [所需依赖模块：](#所需依赖模块-1)
+  - [连接代码：](#连接代码-1)
+- [三、Redis的API使用](#三redis的api使用)
+  - [3.1 String操作](#31-string操作)
+  - [3.2 Hash操作](#32-hash操作)
+  - [3.3 List操作](#33-list操作)
+  - [3.4 set集合操作](#34-set集合操作)
+  - [3.5 其他常用操作](#35-其他常用操作)
+  - [3.6 订阅和发布](#36-订阅和发布)
 
 
 ## 一、python连接单一redis
@@ -283,7 +283,7 @@ hscan_iter(name, match=None, count=None)
         # print item
 ```
 
-### 3.2 List操作
+### 3.3 List操作
 List操作，redis中的List在在内存中按照一个name对应一个List来存储。
 ```python
 lpush(name,values)
