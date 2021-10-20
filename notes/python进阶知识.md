@@ -1,29 +1,32 @@
 - [一、函数式编程](#一函数式编程)
-  * [1.1 匿名函数lambda表达式](#11-匿名函数lambda表达式)
-  * [1.2 高阶函数map](#12-高阶函数map)
-  * [1.3 高阶函数reduce](#13-高阶函数reduce)
-  * [1.4 高阶函数之ﬁlter](#14-高阶函数之ﬁlter)
-  * [1.5 高阶函数之sorted](#15-高阶函数之sorted)
-  * [1.6 闭包](#16-闭包)
-  * [1.7 装饰器](#17-装饰器)
+  - [1.1 匿名函数lambda表达式](#11-匿名函数lambda表达式)
+  - [1.2 高阶函数map](#12-高阶函数map)
+  - [1.3 高阶函数reduce](#13-高阶函数reduce)
+  - [1.4 高阶函数之ﬁlter](#14-高阶函数之ﬁlter)
+  - [1.5 高阶函数之sorted](#15-高阶函数之sorted)
+  - [1.6 闭包](#16-闭包)
+  - [1.7 装饰器](#17-装饰器)
 - [二、错误处理](#二错误处理)
-  * [2.1 异常捕获和处理](#21-异常捕获和处理)
-  * [2.2 自定义异常](#22-自定义异常)
-- [三、IO操作](#三IO操作)
-  * [3.1 输入输出](#31-输入输出)
-  * [3.2 文件的读取](#32-文件的读取)
-  * [3.3 文件的写入](#33-文件的写入)
-  * [3.4 操作文件夹](#34-操作文件夹)
-  * [3.5 StringIO和BytesIO](#35-StringIO和BytesIO)
+  - [2.1 异常捕获和处理](#21-异常捕获和处理)
+  - [2.2 自定义异常](#22-自定义异常)
+- [三、IO操作](#三io操作)
+  - [3.1 输入输出](#31-输入输出)
+  - [3.2 文件的读取](#32-文件的读取)
+  - [3.3 文件的写入](#33-文件的写入)
+  - [3.4 操作文件夹](#34-操作文件夹)
+  - [3.5 StringIO和BytesIO](#35-stringio和bytesio)
 - [四、面向对象](#四面向对象)
   - [4.1 类和对象](#41-类和对象)
   - [4.2 构造函数](#42-构造函数)
   - [4.3 实例方法，类方法，静态方法](#43-实例方法类方法静态方法)
+    - [实例方法：**](#实例方法)
+    - [类方法](#类方法)
+    - [静态方法](#静态方法)
   - [4.4 访问限制](#44-访问限制)
     - [4.4.1 设置访问限制](#441-设置访问限制)
     - [4.4.2 打破访问限制](#442-打破访问限制)
   - [4.5 继承](#45-继承)
-    - [4.5.1 单继承](#451-单继承 )
+    - [4.5.1 单继承](#451-单继承)
     - [4.5.2 多继承](#452-多继承)
     - [4.5.3 多重继承带来的问题](#453-多重继承带来的问题)
   - [4.6 super](#46-super)
@@ -31,11 +34,14 @@
   - [4.8 枚举类](#48-枚举类)
 - [五、网络编程](#五网络编程)
   - [5.1 socket](#51-socket)
-  - [5.2 UDP](#52-UDP)
-  - [5.3 TCP](#53-TCP)
+  - [5.2 UDP](#52-udp)
+  - [5.3 TCP](#53-tcp)
 - [六、多线程和多进程](#六多线程和多进程)
   - [6.1 创建线程](#61-创建线程)
+    - [6.1.1 通过`_thread`实现](#611-通过_thread实现)
+    - [6.1.2 通过`threading`实现](#612-通过threading实现)
   - [6.2 线程安全问题](#62-线程安全问题)
+  - [6.3 多进程](#63-多进程)
 
 # 一、函数式编程
 
@@ -1140,8 +1146,71 @@ client.close()
 - python中的GIL详解(https://www.cnblogs.com/SuKiWX/p/8804974.html)
 - 线程扩展阅读(https://www.cnblogs.com/hwlong/p/8952510.html)
 
+在python的种，多线程是通过并发进行实现的。
+> 并行是指两个或者多个事件在同一时刻发生；而并发是指两个或多个事件在同一时间间隔发生。
+
 ## 6.1 创建线程
 
+### 6.1.1 通过`_thread`实现
+`_thread` 有一个缺点，当主线程结束的时候，它所有的子线程都会强行结束
+```python
+
+def loop0():
+    print("loop0 start " + ctime())
+    sleep(4)
+    print("loop0 end " + ctime())
+
+
+def loop1():
+    print("loop1 start " + ctime())
+    sleep(2)
+    print("loop1 end " + ctime())
+
+
+def main():
+    _thread.start_new_thread(loop0, ())
+    _thread.start_new_thread(loop1, ())
+    sleep(1)
+
+# 当main函数执行结束后，会将loop0，loop1 两个子线程也进行强行停止，不会进行等待
+if __name__ == "__main__":
+    main()   
+```
+如果想要解决上述问题，需要手动添加锁，并对锁进行监听。
+```python
+import _thread
+from time import ctime, sleep
+
+
+def loop(num, sec, lock):
+    print("loop", num, " start " + ctime())
+    sleep(sec)
+    print("loop", num, "  end " + ctime())
+    lock.release()
+
+
+def main():
+    loops = [4, 2]
+    locks = []
+    num = range(len(loops))
+    for i in num:
+        # 声明一个锁，并将锁给锁上
+        lock = _thread.allocate_lock()
+        lock.acquire()
+        locks.append(lock)
+    for i in num:
+        # 不将这个放入上一个循环的原因：获取锁也需要时间，可能会出现bug
+        _thread.start_new_thread(loop, (i, loops[i], locks[i]))
+    for i in num:
+        while locks[i].locked():
+            pass
+
+
+if __name__ == "__main__":
+    main()
+```
+
+### 6.1.2 通过`threading`实现
 **方式一：**
 
 ```python
