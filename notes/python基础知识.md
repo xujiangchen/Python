@@ -466,6 +466,23 @@ user.has_key("name")
 "name" in user.keys()
 ```
 
+**字典之间的比较**
+```python
+# 没有嵌套字典
+first_dict = {"name": "许","age": 22,"sex": "男",}
+second_dict = {"name": "许","age": 22}
+
+set1 = set(first_dict.items())
+set2 = set(second_dict.items())
+result = set1 ^ set2
+
+
+if len(result) == 0:
+  print("两个字典相同")
+else:
+  print("字典中不相同的属性", result)
+  
+```
 
 ## 4.5 rang类型
 
