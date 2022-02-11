@@ -441,6 +441,7 @@ print list(tup)
 | del dict['key'] | 删除一个key及其对应value                   |
 | del dict        | 清空整个字典                               |
 | len(dict)       | 字典元素个数                               |
+| pop('key')      | 删除字典给定键 key 及对应的值数,返回value    |
 
 **字符串和字典之间相互转换**
 
