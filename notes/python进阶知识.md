@@ -773,6 +773,42 @@ if __name__ == '__main__':
     main()
 ```
 
+### 4.4.4 __slots__
+一般情况下，Python允许在程序运行时给对象绑定新的属性或方法。但是，如果我们要限定自定义类型的对象只能绑定某些属性，可以通过在类中定义__slots__变量来进行限定，这相当于告诉解释器，实例的属性都叫什么，并且只能有这些属性，在定义时，**推荐__slots__使用元组，而不是列表，这样做可以节省内存, __slots__的限定只对当前类的对象生效，对子类并不起任何作用。**
+```python
+class Person:
+
+    __slots__ = ("_name", "_age")
+
+    def __init__(self, name, age):
+        self._name = name
+        self._age = age
+
+    # 访问器 - getter方法
+    @property
+    def age(self):
+        return self._age
+
+    # 修改器 - setter方法
+    @age.setter
+    def age(self, age):
+        self._age = age
+
+    def play(self):
+        if self._age <= 16:
+            print('%s正在玩飞行棋.' % self._name)
+        else:
+            print('%s正在玩斗地主.' % self._name)
+
+
+def main():
+    person = Person("李元芳", 12)
+    person.__dict__["pid"] = "001"
+    # 报错，在person中已经约定了属性，无法再绑定新的属性
+
+if __name__ == '__main__':
+    main()
+```
 
 ## 4.5 继承
 
