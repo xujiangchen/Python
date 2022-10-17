@@ -25,6 +25,7 @@
   - [4.4 访问限制](#44-访问限制)
     - [4.4.1 设置访问限制](#441-设置访问限制)
     - [4.4.2 打破访问限制](#442-打破访问限制)
+    - [4.4.3 @property装饰器](#443-@property装饰器)
   - [4.5 继承](#45-继承)
     - [4.5.1 单继承](#451-单继承)
     - [4.5.2 多继承](#452-多继承)
@@ -688,6 +689,7 @@ person.__print_age()
 ### 4.4.2 打破访问限制
 
 如下的一个python代码，最后的输出值为 -1 ，为什么私有方法被访问，还可以被赋值？
+但是，Python并没有从语法上严格保证私有属性或方法的私密性，它只是给私有的属性和方法换了一个名字来妨碍对它们的访问，事实上如果你知道更换名字的规则仍然可以访问到它们
 
 ```python
 # 定义person类
@@ -734,6 +736,43 @@ person._Person__age = 12
 print(person._Person__age)
 person.introduce_self()
 ```
+### 4.4.3 @property装饰器
+之前我们讨论过Python中属性和方法访问权限的问题，虽然我们不建议将属性设置为私有的，但是如果直接将属性暴露给外界也是有问题的，比如我们没有办法检查赋给属性的值是否有效。我们之前的建议是将属性命名以单下划线开头，通过这种方式来暗示属性是受保护的，不建议外界直接访问，那么如果想访问属性可以通过属性的getter（访问器）和setter（修改器）方法进行对应的操作。如果要做到这点，就可以考虑使用@property包装器来包装getter和setter方法，使得对属性的访问既安全又方便。
+```python
+class Person:
+
+    def __init__(self, name, age):
+        self._name = name
+        self._age = age
+
+    # 访问器 - getter方法
+    @property
+    def age(self):
+        return self._age
+
+    # 修改器 - setter方法
+    @age.setter
+    def age(self, age):
+        self._age = age
+
+    def play(self):
+        if self._age <= 16:
+            print('%s正在玩飞行棋.' % self._name)
+        else:
+            print('%s正在玩斗地主.' % self._name)
+
+
+def main():
+    person = Person("李元芳", 12)
+    person.play()
+    person.age = 20
+    person.play()
+
+
+if __name__ == '__main__':
+    main()
+```
+
 
 ## 4.5 继承
 
